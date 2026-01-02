@@ -4,13 +4,14 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
 import Home from './pages/Home';
-import Projects from './pages/Projects';
 import Services from './pages/Services';
 import Courses from './pages/Courses';
-import Blog from './pages/Blog';
 import Contact from './pages/Contact';
+import EventsGallery from './pages/EventsGallery';
+import Seminars from './pages/Seminars';
 
 import LoadingScreen from './components/ui/LoadingScreen';
+import FloatingContactButton from './components/ui/FloatingContactButton';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -24,15 +25,16 @@ function App() {
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/projects" element={<Projects />} />
             <Route path="/services" element={<Services />} />
             <Route path="/courses" element={<Courses />} />
-            <Route path="/blog" element={<Blog />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/events" element={<EventsGallery />} />
+            <Route path="/seminars" element={<Seminars />} />
           </Routes>
         </main>
         <Footer />
       </div>
+      <FloatingContactButton />
     </Router>
   );
 }

@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
     Globe, Smartphone, Code, Megaphone, Brain,
     User, FileText, BookOpen, Handshake, Bot, ClipboardCheck,
     Sparkles
 } from 'lucide-react';
+import GlassRadio from '../components/ui/GlassRadio';
+import NeumorphicServiceCard from '../components/ui/NeumorphicServiceCard';
 
 const Services = () => {
+    const [filter, setFilter] = useState('All');
+
     const technicalServices = [
         {
             title: 'Website Development',
@@ -80,131 +84,131 @@ const Services = () => {
                         className="text-5xl md:text-6xl font-bold mb-4"
                         style={{ color: '#000000' }}
                     >
-                        Our Services
+                        Our Programs
                     </h1>
+                    <p className="text-lg mb-8" style={{ color: '#6C6C6C' }}>
+                        Filter programs by category
+                    </p>
+                    <GlassRadio
+                        options={['All', 'Technical', 'Career']}
+                        defaultValue="All"
+                        onChange={setFilter}
+                    />
                 </div>
 
                 {/* Section 1 - Technical Solutions */}
-                <div className="mb-20">
-                    <h2
-                        className="text-4xl font-bold mb-12 text-center"
-                        style={{ color: '#000000' }}
-                    >
-                        Technical Solutions
-                    </h2>
+                {(filter === 'All' || filter === 'Technical') && (
+                    <div className="mb-20">
+                        <h2
+                            className="text-4xl font-bold mb-12 text-center"
+                            style={{ color: '#000000' }}
+                        >
+                            Technical Programs
+                        </h2>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {technicalServices.map((service, index) => (
-                            <motion.div
-                                key={index}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.3, delay: index * 0.1 }}
-                                className="group cursor-pointer"
-                            >
-                                <div
-                                    className="bg-white rounded-3xl p-8 border h-full transition-all hover:shadow-xl"
-                                    style={{
-                                        boxShadow: '0 4px 24px rgba(0, 0, 0, 0.06)',
-                                        borderColor: '#EAEAEA'
-                                    }}
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {technicalServices.map((service, index) => (
+                                <motion.div
+                                    key={index}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.3, delay: index * 0.1 }}
+                                    className="group cursor-pointer h-full"
                                 >
-                                    {/* Icon */}
-                                    <div
-                                        className="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 transition-all"
-                                        style={{ background: 'rgba(59, 130, 246, 0.1)' }}
-                                    >
-                                        <service.icon
-                                            size={32}
-                                            strokeWidth={1.5}
-                                            style={{ color: '#3B82F6' }}
-                                        />
-                                    </div>
+                                    <NeumorphicServiceCard>
+                                        {/* Icon */}
+                                        <div
+                                            className="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 transition-all"
+                                            style={{ background: 'rgba(59, 130, 246, 0.1)' }}
+                                        >
+                                            <service.icon
+                                                size={32}
+                                                strokeWidth={1.5}
+                                                style={{ color: '#3B82F6' }}
+                                            />
+                                        </div>
 
-                                    {/* Title */}
-                                    <h3
-                                        className="text-2xl font-bold mb-4"
-                                        style={{ color: '#000000' }}
-                                    >
-                                        {service.title}
-                                    </h3>
+                                        {/* Title */}
+                                        <h3
+                                            className="text-2xl font-bold mb-4"
+                                            style={{ color: '#000000' }}
+                                        >
+                                            {service.title}
+                                        </h3>
 
-                                    {/* Description */}
-                                    <p
-                                        className="leading-relaxed"
-                                        style={{
-                                            color: '#6C6C6C',
-                                            lineHeight: '1.7'
-                                        }}
-                                    >
-                                        {service.description}
-                                    </p>
-                                </div>
-                            </motion.div>
-                        ))}
+                                        {/* Description */}
+                                        <p
+                                            className="leading-relaxed"
+                                            style={{
+                                                color: '#4B5563',
+                                                lineHeight: '1.7'
+                                            }}
+                                        >
+                                            {service.description}
+                                        </p>
+                                    </NeumorphicServiceCard>
+                                </motion.div>
+                            ))}
+                        </div>
                     </div>
-                </div>
+                )}
 
                 {/* Section 2 - Career Services */}
-                <div className="mb-20">
-                    <h2
-                        className="text-4xl font-bold mb-12 text-center"
-                        style={{ color: '#000000' }}
-                    >
-                        Career Services
-                    </h2>
+                {(filter === 'All' || filter === 'Career') && (
+                    <div className="mb-20">
+                        <h2
+                            className="text-4xl font-bold mb-12 text-center"
+                            style={{ color: '#000000' }}
+                        >
+                            Career Programs
+                        </h2>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {careerServices.map((service, index) => (
-                            <motion.div
-                                key={index}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.3, delay: index * 0.1 }}
-                                className="group cursor-pointer"
-                            >
-                                <div
-                                    className="bg-white rounded-3xl p-8 border h-full transition-all hover:shadow-xl"
-                                    style={{
-                                        boxShadow: '0 4px 24px rgba(0, 0, 0, 0.06)',
-                                        borderColor: '#EAEAEA'
-                                    }}
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {careerServices.map((service, index) => (
+                                <motion.div
+                                    key={index}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.3, delay: index * 0.1 }}
+                                    className="group cursor-pointer h-full"
                                 >
-                                    {/* Icon */}
-                                    <div
-                                        className="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 transition-all"
-                                        style={{ background: 'rgba(59, 130, 246, 0.1)' }}
-                                    >
-                                        <service.icon
-                                            size={32}
-                                            strokeWidth={1.5}
-                                            style={{ color: '#3B82F6' }}
-                                        />
-                                    </div>
+                                    <NeumorphicServiceCard>
+                                        {/* Icon */}
+                                        <div
+                                            className="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 transition-all"
+                                            style={{ background: 'rgba(59, 130, 246, 0.1)' }}
+                                        >
+                                            <service.icon
+                                                size={32}
+                                                strokeWidth={1.5}
+                                                style={{ color: '#3B82F6' }}
+                                            />
+                                        </div>
 
-                                    {/* Title */}
-                                    <h3
-                                        className="text-2xl font-bold mb-4"
-                                        style={{ color: '#000000' }}
-                                    >
-                                        {service.title}
-                                    </h3>
+                                        {/* Title */}
+                                        <h3
+                                            className="text-2xl font-bold mb-4"
+                                            style={{ color: '#000000' }}
+                                        >
+                                            {service.title}
+                                        </h3>
 
-                                    {/* Description */}
-                                    <p
-                                        className="leading-relaxed"
-                                        style={{
-                                            color: '#6C6C6C',
-                                            lineHeight: '1.7'
-                                        }}
-                                    >
-                                        {service.description}
-                                    </p>
-                                </div>
-                            </motion.div>
-                        ))}
+                                        {/* Description */}
+                                        <p
+                                            className="leading-relaxed"
+                                            style={{
+                                                color: '#4B5563',
+                                                lineHeight: '1.7'
+                                            }}
+                                        >
+                                            {service.description}
+                                        </p>
+                                    </NeumorphicServiceCard>
+                                </motion.div>
+                            ))}
+                        </div>
                     </div>
-                </div>
+                )}
 
                 {/* Footer CTA Section */}
                 <div

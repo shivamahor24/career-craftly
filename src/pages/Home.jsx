@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles, Clock, TrendingUp, Users, Target, Shield } from 'lucide-react';
+import NeumorphicCard from '../components/ui/NeumorphicCard';
 
 const Home = () => {
     return (
@@ -42,11 +43,62 @@ const Home = () => {
 
                     {/* CTA Buttons */}
                     <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-                        <button className="bg-black text-white px-8 py-4 rounded-full font-medium hover:bg-gray-900 hover:shadow-lg transition-all flex items-center space-x-2">
-                            <span>Get Started</span>
-                            <ArrowRight className="w-5 h-5" />
+                        <button
+                            className="neu-button-primary"
+                            style={{
+                                backgroundColor: '#e0e0e0',
+                                borderRadius: '50px',
+                                boxShadow: 'inset 4px 4px 10px #bcbcbc, inset -4px -4px 10px #ffffff',
+                                color: '#111111',
+                                cursor: 'pointer',
+                                fontSize: '18px',
+                                fontWeight: '600',
+                                padding: '16px 48px',
+                                transition: 'all 0.2s ease-in-out',
+                                border: '2px solid rgb(206, 206, 206)',
+                                fontFamily: 'Inter, sans-serif'
+                            }}
+                            onMouseEnter={(e) => {
+                                e.target.style.boxShadow = 'inset 2px 2px 5px #bcbcbc, inset -2px -2px 5px #ffffff, 2px 2px 5px #bcbcbc, -2px -2px 5px #ffffff';
+                                e.target.style.transform = 'translateY(-2px)';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.target.style.boxShadow = 'inset 4px 4px 10px #bcbcbc, inset -4px -4px 10px #ffffff';
+                                e.target.style.transform = 'translateY(0)';
+                            }}
+                            onMouseDown={(e) => {
+                                e.target.style.transform = 'translateY(0)';
+                            }}
+                        >
+                            ✨ Get Started
                         </button>
-                        <button className="bg-white px-8 py-4 rounded-full font-medium border-2 border-gray-300 hover:border-black transition-colors" style={{ color: '#111111' }}>
+                        <button
+                            className="neu-button-secondary"
+                            style={{
+                                backgroundColor: '#e8e8e8',
+                                borderRadius: '50px',
+                                boxShadow: 'inset 4px 4px 10px #bcbcbc, inset -4px -4px 10px #ffffff',
+                                color: '#4d4d4d',
+                                cursor: 'pointer',
+                                fontSize: '18px',
+                                fontWeight: '600',
+                                padding: '16px 48px',
+                                transition: 'all 0.2s ease-in-out',
+                                border: '2px solid rgb(206, 206, 206)',
+                                fontFamily: 'Inter, sans-serif'
+                            }}
+                            onMouseEnter={(e) => {
+                                e.target.style.boxShadow = 'inset 2px 2px 5px #bcbcbc, inset -2px -2px 5px #ffffff, 2px 2px 5px #bcbcbc, -2px -2px 5px #ffffff';
+                                e.target.style.transform = 'translateY(-2px)';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.target.style.boxShadow = 'inset 4px 4px 10px #bcbcbc, inset -4px -4px 10px #ffffff';
+                                e.target.style.transform = 'translateY(0)';
+                            }}
+                            onMouseDown={(e) => {
+                                e.target.style.transform = 'translateY(0)';
+                            }}
+                        >
                             Explore Services
                         </button>
                     </div>
@@ -81,7 +133,7 @@ const Home = () => {
                         </p>
                     </div>
 
-                    {/* Benefits Cards */}
+                    {/* Benefits Cards - Neumorphic Style */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         {[
                             { title: 'Real-Time Performance Insights', desc: 'Stay ahead with instant analytics and actionable intelligence', icon: Clock, metric: 'Real-Time' },
@@ -93,18 +145,13 @@ const Home = () => {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.3, delay: index * 0.05 }}
-                                className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-lg transition-shadow"
                             >
-                                <div className="relative mb-5">
-                                    <div className="w-24 h-24 bg-blue-50 rounded-full mx-auto flex items-center justify-center">
-                                        <benefit.icon className="w-10 h-10" style={{ color: '#3B82F6' }} />
-                                    </div>
-                                    <div className="absolute top-0 right-1/4 bg-black rounded-full px-3 py-1 shadow text-xs font-medium text-white">
-                                        {benefit.metric}
-                                    </div>
-                                </div>
-                                <h3 className="text-xl font-bold mb-2 text-center" style={{ color: '#111111' }}>{benefit.title}</h3>
-                                <p className="text-sm text-center" style={{ color: '#2E2E2E' }}>{benefit.desc}</p>
+                                <NeumorphicCard
+                                    icon={benefit.icon}
+                                    title={benefit.title}
+                                    description={benefit.desc}
+                                    metric={benefit.metric}
+                                />
                             </motion.div>
                         ))}
                     </div>
@@ -147,9 +194,30 @@ const Home = () => {
                     <p className="text-lg mb-6" style={{ color: '#2E2E2E' }}>
                         Join forward-thinking brands leveraging AI to stay ahead of the competition.
                     </p>
-                    <button className="bg-black text-white px-8 py-4 rounded-full font-medium hover:bg-gray-900 hover:shadow-lg transition-all inline-flex items-center space-x-2">
-                        <span>Start Your Transformation</span>
-                        <ArrowRight className="w-5 h-5" />
+                    <button
+                        style={{
+                            backgroundColor: '#e0e0e0',
+                            borderRadius: '50px',
+                            boxShadow: 'inset 4px 4px 10px #bcbcbc, inset -4px -4px 10px #ffffff',
+                            color: '#111111',
+                            cursor: 'pointer',
+                            fontSize: '18px',
+                            fontWeight: '600',
+                            padding: '16px 48px',
+                            transition: 'all 0.2s ease-in-out',
+                            border: '2px solid rgb(206, 206, 206)',
+                            fontFamily: 'Inter, sans-serif'
+                        }}
+                        onMouseEnter={(e) => {
+                            e.target.style.boxShadow = 'inset 2px 2px 5px #bcbcbc, inset -2px -2px 5px #ffffff, 2px 2px 5px #bcbcbc, -2px -2px 5px #ffffff';
+                            e.target.style.transform = 'translateY(-2px)';
+                        }}
+                        onMouseLeave={(e) => {
+                            e.target.style.boxShadow = 'inset 4px 4px 10px #bcbcbc, inset -4px -4px 10px #ffffff';
+                            e.target.style.transform = 'translateY(0)';
+                        }}
+                    >
+                        Start Your Transformation
                     </button>
                 </div>
             </section>

@@ -1,0 +1,47 @@
+import React from 'react';
+import styled from 'styled-components';
+
+const NeumorphicServiceCard = ({ children, className, style, onClick }) => {
+    return (
+        <StyledWrapper className={className} style={style} onClick={onClick}>
+            <div className="card">
+                {children}
+            </div>
+        </StyledWrapper>
+    );
+}
+
+const StyledWrapper = styled.div`
+  .card {
+    width: 100%;
+    height: 100%;
+    min-height: 254px;
+    background: rgb(223, 225, 235);
+    border-radius: 50px;
+    padding: 2rem;
+    box-shadow: 
+      rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset, 
+      rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset, 
+      rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, 
+      rgba(0, 0, 0, 0.06) 0px 2px 1px, 
+      rgba(0, 0, 0, 0.09) 0px 4px 2px, 
+      rgba(0, 0, 0, 0.09) 0px 8px 4px, 
+      rgba(0, 0, 0, 0.09) 0px 16px 8px, 
+      rgba(0, 0, 0, 0.09) 0px 32px 16px;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 
+      rgba(0, 0, 0, 0.15) 0px -23px 25px 0px inset, 
+      rgba(0, 0, 0, 0.12) 0px -36px 30px 0px inset, 
+      rgba(0, 0, 0, 0.08) 0px -79px 40px 0px inset, 
+      rgba(0, 0, 0, 0.1) 0px 4px 8px, 
+      rgba(0, 0, 0, 0.1) 0px 8px 16px;
+  }
+`;
+
+export default NeumorphicServiceCard;

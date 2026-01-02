@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { BookOpen, Clock, Check, ArrowRight } from 'lucide-react';
+import NeumorphicServiceCard from '../components/ui/NeumorphicServiceCard';
 
 const Courses = () => {
     const courses = [
@@ -122,13 +123,7 @@ const Courses = () => {
                             transition={{ duration: 0.3, delay: index * 0.05 }}
                             className="group cursor-pointer"
                         >
-                            <div
-                                className="bg-white rounded-3xl p-8 border h-full flex flex-col transition-all hover:shadow-xl"
-                                style={{
-                                    boxShadow: '0 4px 24px rgba(0, 0, 0, 0.06)',
-                                    borderColor: '#EAEAEA'
-                                }}
-                            >
+                            <NeumorphicServiceCard>
                                 {/* Course Icon (Blue) */}
                                 <div
                                     className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4"
@@ -175,7 +170,7 @@ const Courses = () => {
                                 <p
                                     className="mb-6 leading-relaxed"
                                     style={{
-                                        color: '#6C6C6C',
+                                        color: '#4B5563',
                                         lineHeight: '1.7'
                                     }}
                                 >
@@ -183,7 +178,7 @@ const Courses = () => {
                                 </p>
 
                                 {/* Feature List with Blue Bullets */}
-                                <ul className="space-y-3 mb-6 flex-grow">
+                                <ul className="space-y-3 mb-6 flex-grow w-full text-left">
                                     {course.features.map((feature, idx) => (
                                         <li
                                             key={idx}
@@ -217,7 +212,7 @@ const Courses = () => {
                                 >
                                     <span>Enroll Now</span>
                                 </button>
-                            </div>
+                            </NeumorphicServiceCard>
                         </motion.div>
                     ))}
                 </div>

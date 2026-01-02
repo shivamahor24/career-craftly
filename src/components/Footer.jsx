@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Instagram, Youtube, Linkedin, ArrowRight } from 'lucide-react';
+import FooterAnimation from './ui/FooterAnimation';
 
 const Footer = () => {
     return (
@@ -50,13 +51,15 @@ const Footer = () => {
 
             {/* Section 2 - Footer */}
             <footer
-                className="pt-20 pb-10"
+                className="pt-20 pb-10 relative"
                 style={{
                     background: 'linear-gradient(135deg, #F5F6F8 0%, #ECEFF2 50%, #F5F6F8 100%)',
-                    borderTop: '1px solid #E5E5E5'
+                    borderTop: '1px solid #E5E5E5',
+                    overflow: 'hidden'
                 }}
             >
-                <div className="container mx-auto px-6">
+                <FooterAnimation />
+                <div className="container mx-auto px-6" style={{ position: 'relative', zIndex: 1 }}>
                     {/* Footer Layout - 4 Columns */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
 

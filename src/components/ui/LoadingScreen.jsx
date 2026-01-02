@@ -1,6 +1,5 @@
-// CLEAN VERSION — LOGO ADDED INSIDE ORB WITH HOME PAGE COLOR PALETTE
-
 import React, { useEffect, useState } from 'react';
+import { Sparkles } from 'lucide-react';
 
 const LoadingScreen = ({ onComplete }) => {
   const [isExiting, setIsExiting] = useState(false);
@@ -37,141 +36,145 @@ const LoadingScreen = ({ onComplete }) => {
       className={`fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden transition-opacity duration-700 ease-in-out ${isExiting ? 'opacity-0 pointer-events-none' : 'opacity-100'
         }`}
       style={{
-        background:
-          'linear-gradient(135deg, #9ca3af 0%, #b8bdc7 25%, #d1d5db 50%, #b8bdc7 75%, #9ca3af 100%)',
+        background: 'linear-gradient(135deg, #E3E6EB 0%, #D6D9DE 100%)',
       }}
     >
+      {/* Subtle Grid Background */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-[0.03]"
+        style={{
+          backgroundImage: `linear-gradient(#000 1px, transparent 1px), linear-gradient(90deg, #000 1px, transparent 1px)`,
+          backgroundSize: '40px 40px'
+        }}
+      />
 
-      {/* Background Waves */}
-      <div className="absolute inset-0 opacity-30">
-        <div
-          className="absolute w-full h-full animate-wave-slow"
-          style={{
-            background:
-              'radial-gradient(ellipse at 50% 50%, rgba(100,100,120,0.15) 0%, transparent 60%)',
-          }}
-        />
-        <div
-          className="absolute w-full h-full animate-wave-medium"
-          style={{
-            background:
-              'radial-gradient(ellipse at 30% 70%, rgba(120,120,140,0.12) 0%, transparent 50%)',
-          }}
-        />
-      </div>
+      {/* Corner Accents for Technical Feel */}
+      <div className="absolute top-8 left-8 w-4 h-4 border-t-2 border-l-2 border-gray-400/30" />
+      <div className="absolute top-8 right-8 w-4 h-4 border-t-2 border-r-2 border-gray-400/30" />
+      <div className="absolute bottom-8 left-8 w-4 h-4 border-b-2 border-l-2 border-gray-400/30" />
+      <div className="absolute bottom-8 right-8 w-4 h-4 border-b-2 border-r-2 border-gray-400/30" />
 
-      {/* Particles */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(20)].map((_, i) => (
+      {/* Floating Sphere Container */}
+      <div className="relative flex flex-col items-center justify-center mb-12">
+
+        {/* Badge - Added to match Hero Section */}
+        <div className="inline-flex items-center space-x-2 bg-white/90 backdrop-blur-md border border-gray-200 rounded-full px-6 py-2.5 mb-12 shadow-sm animate-fade-up" style={{ animationDelay: '0.1s' }}>
+          <Sparkles className="w-4 h-4" style={{ color: '#3B82F6' }} />
+          <span className="text-sm font-semibold tracking-wide" style={{ color: '#606060' }}>AI SOLUTIONS FOR MODERN BUSINESSES</span>
+        </div>
+
+        {/* The Glossy Sphere */}
+        <div
+          className="relative w-48 h-48 rounded-full z-20 flex items-center justify-center animate-float"
+          style={{
+            background: 'radial-gradient(circle at 30% 30%, #ffffff 0%, #e6e6e6 40%, #bfbfbf 85%, #8c8c8c 100%)',
+            boxShadow: `
+              inset -10px -10px 20px rgba(0,0,0,0.1),
+              inset 10px 10px 20px rgba(255,255,255,1),
+              0 20px 50px rgba(0,0,0,0.3)
+            `
+          }}
+        >
+          {/* Sharp Window Reflection */}
           <div
-            key={i}
-            className="absolute w-1 h-1 bg-gray-300/50 rounded-full animate-particle"
+            className="absolute top-6 right-10 w-16 h-12 bg-white rounded-md opacity-90 blur-[1px] transform rotate-[15deg]"
             style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 3}s`,
-              animationDuration: `${3 + Math.random() * 4}s`,
+              background: 'linear-gradient(to bottom, #ffffff, rgba(255,255,255,0.8))',
+              boxShadow: '0 0 10px rgba(255,255,255,0.8)'
             }}
           />
-        ))}
-      </div>
 
-      {/* MAIN GLOSSY ORB WITH LOGO */}
-      <div className="relative flex items-center justify-center mb-16">
-        <div className="relative w-60 h-60 rounded-full animate-float z-10">
-
-          {/* Base Sphere */}
+          {/* Inner Glow/Highlight */}
           <div
             className="absolute inset-0 rounded-full"
             style={{
-              background:
-                'radial-gradient(circle at 30% 30%, #e5e7eb 0%, #d1d5db 30%, #b8bdc7 55%, #9ca3af 100%)',
-              boxShadow: `
-                inset -12px -12px 35px rgba(0,0,0,0.25),
-                inset 15px 15px 40px rgba(255,255,255,0.6),
-                0 25px 70px rgba(0,0,0,0.35),
-                0 10px 40px rgba(100,100,120,0.3)
-              `,
+              background: 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8) 0%, transparent 40%)',
+              filter: 'blur(2px)'
             }}
           />
 
-          {/* Outer Rim Glow */}
-          <div
-            className="absolute inset-0 rounded-full pointer-events-none"
+          {/* Logo Inside */}
+          <img
+            src="/asssets/loadingpagelogo.png"
+            alt="Logo"
+            className="w-24 h-24 object-contain z-30 relative opacity-90"
             style={{
-              boxShadow: '0 0 45px 15px rgba(100,100,120,0.35)',
-              border: '2px solid rgba(120,120,140,0.4)',
+              filter: 'drop-shadow(0 4px 8px rgba(77, 124, 255, 0.2)) mix-blend-mode: multiply'
             }}
           />
-
-          {/* Soft glow behind logo */}
-          <div
-            className="absolute inset-0 flex items-center justify-center"
-            style={{ filter: 'blur(28px)' }}
-          >
-            <div
-              className="w-28 h-28 rounded-full"
-              style={{
-                background:
-                  'radial-gradient(circle, rgba(110,110,130,0.4), transparent 70%)',
-              }}
-            />
-          </div>
-
-          {/* Company Logo */}
-          <div className="absolute inset-0 flex items-center justify-center z-20">
-            <img
-              src="/asssets/loadingpagelogo.png"
-              alt="Company Logo"
-              className="w-40 h-40 object-contain"
-              style={{
-                filter:
-                  'drop-shadow(0 0 6px rgba(100,100,120,0.5)) drop-shadow(0 0 12px rgba(255,255,255,0.7))',
-              }}
-            />
-          </div>
-
-          {/* Highlight */}
-          <div
-            className="absolute top-8 left-10 w-24 h-12 rounded-full opacity-90 blur-[3px]"
-            style={{
-              background:
-                'linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.25), transparent)',
-            }}
-          />
-
-          {/* Soft Gray Tint */}
-          <div className="absolute bottom-10 right-10 w-28 h-28 bg-gray-200/25 rounded-full blur-2xl" />
         </div>
+
+        {/* Liquid Ripple Effect */}
+        <div className="absolute -bottom-16 w-64 h-24 flex items-center justify-center perspective-[500px]">
+          {/* Main Dark Ripple Shadow */}
+          <div
+            className="absolute w-full h-full rounded-[100%] animate-ripple"
+            style={{
+              background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.15) 0%, transparent 60%)',
+              transform: 'scaleY(0.2)',
+              animationDelay: '0s'
+            }}
+          />
+          {/* Outer Ring 1 */}
+          <div
+            className="absolute w-[120%] h-[120%] rounded-[100%] border border-gray-300/30 animate-ripple"
+            style={{
+              transform: 'scaleY(0.2)',
+              animationDelay: '0.5s'
+            }}
+          />
+          {/* Outer Ring 2 */}
+          <div
+            className="absolute w-[150%] h-[150%] rounded-[100%] border border-gray-300/20 animate-ripple"
+            style={{
+              transform: 'scaleY(0.2)',
+              animationDelay: '1s'
+            }}
+          />
+        </div>
+
       </div>
 
-      {/* Text + Progress */}
-      <div className="flex flex-col items-center space-y-4 z-10 mt-8">
+      {/* Neumorphic Loading Bar */}
+      <div className="flex flex-col items-center space-y-6 z-10 mt-4">
         <h1
-          className="text-5xl font-bold tracking-tight animate-fade-up"
-          style={{ color: '#111111' }}
+          className="text-4xl md:text-5xl font-bold tracking-tight text-gray-800 animate-fade-up"
+          style={{
+            textShadow: '1px 1px 2px rgba(255,255,255,0.8), -1px -1px 2px rgba(0,0,0,0.1)',
+            animationDelay: '0.2s'
+          }}
         >
-          CareerCraftly
+          CAREER CRAFTLY
         </h1>
 
         <p
-          className="text-sm opacity-80 animate-fade-up max-w-md text-center px-4"
-          style={{ color: '#2E2E2E', animationDelay: '0.2s' }}
+          className="text-lg opacity-80 animate-fade-up max-w-md text-center px-4"
+          style={{ color: '#2E2E2E', animationDelay: '0.3s' }}
         >
-          Intelligent solutions for the future of work
+          Where intelligent automation meets real-world execution
         </p>
 
         <div
-          className="relative w-64 mt-6 animate-fade-up"
-          style={{ animationDelay: '0.4s' }}
+          className="relative w-64 h-4 rounded-full overflow-hidden animate-fade-up"
+          style={{
+            background: '#E3E6EB',
+            boxShadow: `
+              inset 3px 3px 6px rgba(0,0,0,0.15),
+              inset -3px -3px 6px rgba(255,255,255,0.8),
+              2px 2px 4px rgba(0,0,0,0.05)
+            `,
+            animationDelay: '0.4s'
+          }}
         >
-          <div className="h-1 bg-blue-100/30 rounded-full overflow-hidden shadow-sm">
-            <div
-              className="h-full bg-gradient-to-r from-blue-600 via-blue-400 to-blue-600 rounded-full transition-all duration-300 ease-out relative"
-              style={{ width: `${progress}%` }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent animate-shimmer-fast" />
-            </div>
+          <div
+            className="h-full rounded-full transition-all duration-300 ease-out relative"
+            style={{
+              width: `${progress}%`,
+              background: 'linear-gradient(90deg, #4D7CFF 0%, #7aa0ff 100%)',
+              boxShadow: '0 0 10px rgba(77, 124, 255, 0.4)'
+            }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent animate-shimmer-fast" />
           </div>
         </div>
       </div>
@@ -200,6 +203,11 @@ const LoadingScreen = ({ onComplete }) => {
           0%{transform:translateX(-100%)}
           100%{transform:translateX(200%)}
         }
+        @keyframes ripple {
+          0% { transform: scale(0.8) scaleY(0.2); opacity: 0.6; }
+          50% { transform: scale(1.2) scaleY(0.2); opacity: 0.3; }
+          100% { transform: scale(0.8) scaleY(0.2); opacity: 0.6; }
+        }
 
         .animate-float { animation: float 5s ease-in-out infinite; }
         .animate-fade-up { animation: fade-up 1s ease-out forwards; opacity:0; }
@@ -207,6 +215,7 @@ const LoadingScreen = ({ onComplete }) => {
         .animate-wave-slow { animation: wave-slow 8s ease-in-out infinite; }
         .animate-wave-medium { animation: wave-medium 6s ease-in-out infinite; }
         .animate-shimmer-fast { animation: shimmer-fast 1.2s linear infinite; }
+        .animate-ripple { animation: ripple 3s ease-in-out infinite; }
       `}</style>
     </div>
   );
