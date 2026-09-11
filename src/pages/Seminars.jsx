@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { Calendar, Clock, MapPin, Bell } from 'lucide-react';
 import GlassRadio from '../components/ui/GlassRadio';
-import NeumorphicSwitch from '../components/ui/NeumorphicSwitch';
 import NeumorphicServiceCard from '../components/ui/NeumorphicServiceCard';
 
 const Seminars = () => {
+    const navigate = useNavigate();
     const [filter, setFilter] = useState('All');
-    const [notifications, setNotifications] = useState(false);
 
-    // Sample upcoming events data
+    // Upcoming events — update dates as your schedule evolves
     const upcomingEvents = [
         {
             id: 1,
             type: 'Webinar',
             title: 'AI-Powered Resume Building Workshop',
-            date: 'December 10, 2025',
+            date: 'March 15, 2026',
             time: '6:00 PM - 8:00 PM IST',
             mode: 'Online',
             description: 'Learn how to create ATS-friendly resumes using AI tools and get personalized feedback from industry experts.',
@@ -24,8 +24,8 @@ const Seminars = () => {
         {
             id: 2,
             type: 'Seminar',
-            title: 'Career Growth in Tech Industry 2025',
-            date: 'December 15, 2025',
+            title: 'Career Growth in Tech Industry 2026',
+            date: 'March 22, 2026',
             time: '3:00 PM - 5:00 PM IST',
             mode: 'Offline',
             location: 'Mumbai Tech Hub',
@@ -36,7 +36,7 @@ const Seminars = () => {
             id: 3,
             type: 'Workshop',
             title: 'Full Stack Development Bootcamp',
-            date: 'December 20, 2025',
+            date: 'April 5, 2026',
             time: '10:00 AM - 4:00 PM IST',
             mode: 'Online',
             description: 'Hands-on workshop covering React, Node.js, and MongoDB. Build a complete web application from scratch.',
@@ -46,7 +46,7 @@ const Seminars = () => {
             id: 4,
             type: 'Webinar',
             title: 'Interview Preparation Masterclass',
-            date: 'December 25, 2025',
+            date: 'April 12, 2026',
             time: '5:00 PM - 7:00 PM IST',
             mode: 'Online',
             description: 'Master the art of technical and HR interviews with mock sessions and expert tips.',
@@ -55,8 +55,8 @@ const Seminars = () => {
         {
             id: 5,
             type: 'Seminar',
-            title: 'Digital Marketing Trends 2025',
-            date: 'January 5, 2026',
+            title: 'Digital Marketing Trends 2026',
+            date: 'April 20, 2026',
             time: '2:00 PM - 4:00 PM IST',
             mode: 'Offline',
             location: 'Delhi Convention Center',
@@ -67,7 +67,7 @@ const Seminars = () => {
             id: 6,
             type: 'Workshop',
             title: 'Data Science & Machine Learning',
-            date: 'January 10, 2026',
+            date: 'May 3, 2026',
             time: '11:00 AM - 5:00 PM IST',
             mode: 'Online',
             description: 'Comprehensive workshop on Python, data analysis, and building ML models for real-world applications.',
@@ -119,12 +119,10 @@ const Seminars = () => {
                     <div className="flex items-center justify-center gap-3">
                         <Bell size={20} style={{ color: '#3B82F6' }} />
                         <p className="text-base font-semibold" style={{ color: '#111111' }}>
-                            🔔 AI Resume Workshop on 10 Dec 2025 — Registrations Open
+                            🔔 AI Resume Workshop on 15 Mar 2026 — Registrations Open
                         </p>
                     </div>
                 </motion.div>
-
-
 
                 {/* Upcoming Event Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -178,6 +176,7 @@ const Seminars = () => {
 
                                 {/* Register Button */}
                                 <button
+                                    onClick={() => navigate('/contact')}
                                     style={{
                                         backgroundColor: '#e0e0e0',
                                         borderRadius: '50px',

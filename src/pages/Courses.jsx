@@ -1,9 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { BookOpen, Clock, Check, ArrowRight } from 'lucide-react';
 import NeumorphicServiceCard from '../components/ui/NeumorphicServiceCard';
 
 const Courses = () => {
+    const navigate = useNavigate();
     const courses = [
         {
             title: 'Full Stack Web Development',
@@ -197,6 +199,7 @@ const Courses = () => {
 
                                 {/* Enroll Now Button */}
                                 <button
+                                    onClick={() => navigate('/contact')}
                                     className="w-full bg-black text-white py-3 rounded-full font-semibold text-sm transition-all flex items-center justify-center space-x-2"
                                     style={{
                                         boxShadow: '0 4px 14px rgba(0, 0, 0, 0.1)'
@@ -231,7 +234,7 @@ const Courses = () => {
                         className="text-4xl font-bold mb-4"
                         style={{ color: '#000000' }}
                     >
-                        Unsure which path to take?
+                        Not sure which course is right for you?
                     </h2>
 
                     {/* Subtext */}
@@ -239,11 +242,12 @@ const Courses = () => {
                         className="text-lg mb-8 max-w-2xl mx-auto"
                         style={{ color: '#6C6C6C' }}
                     >
-                        Find your perfect tech path—take our quick 30-second quiz.
+                        Talk to our team — we'll help you find the perfect learning path for your goals.
                     </p>
 
                     {/* Button */}
                     <button
+                        onClick={() => navigate('/contact')}
                         className="bg-black text-white px-10 py-4 rounded-full font-bold text-lg transition-all inline-flex items-center space-x-2"
                         style={{
                             boxShadow: '0 4px 14px rgba(0, 0, 0, 0.1)'
@@ -257,7 +261,7 @@ const Courses = () => {
                             e.target.style.transform = 'translateY(0)';
                         }}
                     >
-                        <span>Start Quiz</span>
+                        <span>Get Personalized Guidance</span>
                         <ArrowRight size={20} />
                     </button>
                 </div>

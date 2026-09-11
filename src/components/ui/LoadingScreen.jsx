@@ -95,7 +95,7 @@ const LoadingScreen = ({ onComplete }) => {
 
           {/* Logo Inside */}
           <img
-            src="/asssets/loadingpagelogo.png"
+            src="/assets/loadingpagelogo.png"
             alt="Logo"
             className="w-24 h-24 object-contain z-30 relative opacity-90"
             style={{

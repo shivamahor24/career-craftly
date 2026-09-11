@@ -5,10 +5,9 @@ import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
 import Home from './pages/Home';
 import Services from './pages/Services';
-import Courses from './pages/Courses';
 import Contact from './pages/Contact';
 import EventsGallery from './pages/EventsGallery';
-import Seminars from './pages/Seminars';
+import NotFound from './pages/NotFound';
 
 import LoadingScreen from './components/ui/LoadingScreen';
 import FloatingContactButton from './components/ui/FloatingContactButton';
@@ -26,10 +25,9 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/services" element={<Services />} />
-            <Route path="/courses" element={<Courses />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/events" element={<EventsGallery />} />
-            <Route path="/seminars" element={<Seminars />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
         <Footer />
