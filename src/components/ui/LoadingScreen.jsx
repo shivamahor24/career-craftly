@@ -1,221 +1,385 @@
 import React, { useEffect, useState } from 'react';
-import { Sparkles } from 'lucide-react';
+
+const ORBIT_BUBBLES = [
+  {
+    id: 'bubble-1',
+    tool: 'OpenAI',
+    iconSrc: '/ai-logos/openai.svg',
+    ring: 'inner', // Ring 2 (radius 280px)
+    radius: 280,
+    startAngle: 20,
+  },
+  {
+    id: 'bubble-2',
+    tool: 'Claude',
+    iconSrc: '/ai-logos/claude.svg',
+    ring: 'inner', // Ring 2 (radius 280px)
+    radius: 280,
+    startAngle: 200,
+  },
+  {
+    id: 'bubble-3',
+    tool: 'Gemini',
+    iconSrc: '/ai-logos/gemini.svg',
+    ring: 'outer', // Ring 3 (radius 410px) / Ring 4 (radius 560px)
+    radius: 410,
+    startAngle: 140,
+  },
+  {
+    id: 'bubble-4',
+    tool: 'n8n',
+    iconSrc: '/ai-logos/n8n.svg',
+    ring: 'outer',
+    radius: 560,
+    startAngle: 320,
+  },
+];
 
 const LoadingScreen = ({ onComplete }) => {
-  const [isExiting, setIsExiting] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [isBarFading, setIsBarFading] = useState(false);
+  const [isExiting, setIsExiting] = useState(false);
 
+  // Lock body scroll while loader is active
   useEffect(() => {
-    const progressInterval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(progressInterval);
-          return 100;
-        }
-        return prev + 2;
-      });
-    }, 50);
-
-    const exitTimer = setTimeout(() => {
-      setIsExiting(true);
-    }, 3000);
-
-    const completeTimer = setTimeout(() => {
-      onComplete();
-    }, 3800);
-
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
     return () => {
-      clearInterval(progressInterval);
-      clearTimeout(exitTimer);
-      clearTimeout(completeTimer);
+      document.body.style.overflow = originalOverflow;
     };
+  }, []);
+
+  // Smooth realistic progress counter
+  useEffect(() => {
+    let current = 0;
+    const interval = setInterval(() => {
+      current += Math.floor(Math.random() * 4) + 2;
+      if (current >= 100) {
+        current = 100;
+        setProgress(100);
+        clearInterval(interval);
+
+        // Sequence exit transition
+        // Step 1: Progress bar and text fade out in 200ms
+        setTimeout(() => {
+          setIsBarFading(true);
+        }, 150);
+
+        // Step 2: Overlay fades out and scales up slightly over 600ms
+        setTimeout(() => {
+          setIsExiting(true);
+        }, 350);
+
+        // Step 3: Remove loader from DOM and trigger hero entrance
+        setTimeout(() => {
+          if (onComplete) onComplete();
+        }, 950);
+      } else {
+        setProgress(current);
+      }
+    }, 35);
+
+    return () => clearInterval(interval);
   }, [onComplete]);
 
   return (
     <div
-      className={`fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden transition-opacity duration-700 ease-in-out ${isExiting ? 'opacity-0 pointer-events-none' : 'opacity-100'
-        }`}
+      className={`fixed inset-0 z-[9999] flex items-center justify-center bg-white overflow-hidden select-none transition-all duration-600 ease-out ${
+        isExiting
+          ? 'opacity-0 scale-[1.04] pointer-events-none'
+          : 'opacity-100 scale-100'
+      }`}
       style={{
-        background: 'linear-gradient(135deg, #E3E6EB 0%, #D6D9DE 100%)',
+        height: '100svh',
+        width: '100vw',
+        willChange: 'transform, opacity',
+        fontFamily: "'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
       }}
+      role="status"
+      aria-live="polite"
+      aria-label="Loading Career Craftly"
     >
-      {/* Subtle Grid Background */}
+      {/* ─── 4 Concentric Orbit Rings (Decorative, aria-hidden) ─── */}
       <div
-        className="absolute inset-0 pointer-events-none opacity-[0.03]"
+        className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden"
         style={{
-          backgroundImage: `linear-gradient(#000 1px, transparent 1px), linear-gradient(90deg, #000 1px, transparent 1px)`,
-          backgroundSize: '40px 40px'
+          maskImage:
+            'radial-gradient(circle at center, rgba(0,0,0,1) 38%, rgba(0,0,0,0.85) 62%, rgba(0,0,0,0) 84%)',
+          WebkitMaskImage:
+            'radial-gradient(circle at center, rgba(0,0,0,1) 38%, rgba(0,0,0,0.85) 62%, rgba(0,0,0,0) 84%)',
         }}
-      />
+        aria-hidden="true"
+      >
+        {/* Soft Expanding Ripple (every 5s) */}
+        <div className="absolute rounded-full border border-[rgba(91,91,240,0.35)] loader-ripple-ring pointer-events-none" />
 
-      {/* Corner Accents for Technical Feel */}
-      <div className="absolute top-8 left-8 w-4 h-4 border-t-2 border-l-2 border-gray-400/30" />
-      <div className="absolute top-8 right-8 w-4 h-4 border-t-2 border-r-2 border-gray-400/30" />
-      <div className="absolute bottom-8 left-8 w-4 h-4 border-b-2 border-l-2 border-gray-400/30" />
-      <div className="absolute bottom-8 right-8 w-4 h-4 border-b-2 border-r-2 border-gray-400/30" />
-
-      {/* Floating Sphere Container */}
-      <div className="relative flex flex-col items-center justify-center mb-12">
-
-        {/* Badge - Added to match Hero Section */}
-        <div className="inline-flex items-center space-x-2 bg-white/90 backdrop-blur-md border border-gray-200 rounded-full px-6 py-2.5 mb-12 shadow-sm animate-fade-up" style={{ animationDelay: '0.1s' }}>
-          <Sparkles className="w-4 h-4" style={{ color: '#3B82F6' }} />
-          <span className="text-sm font-semibold tracking-wide" style={{ color: '#606060' }}>AI SOLUTIONS FOR MODERN BUSINESSES</span>
+        {/* Ring 1 (Diameter 340px) + 14s Clockwise Arc */}
+        <div className="absolute w-[340px] h-[340px] rounded-full border border-[#E6E8F0] flex items-center justify-center">
+          <svg
+            className="w-full h-full loader-arc-cw-14"
+            viewBox="0 0 340 340"
+            style={{ willChange: 'transform' }}
+          >
+            <circle
+              cx="170"
+              cy="170"
+              r="169.25"
+              fill="none"
+              stroke="url(#loader-arc-grad-1)"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeDasharray="66 1000"
+            />
+            <defs>
+              <linearGradient
+                id="loader-arc-grad-1"
+                x1="0%"
+                y1="0%"
+                x2="100%"
+                y2="100%"
+              >
+                <stop offset="0%" stopColor="#5B5BF0" stopOpacity="0.95" />
+                <stop offset="100%" stopColor="#818CF8" stopOpacity="0" />
+              </linearGradient>
+            </defs>
+          </svg>
         </div>
 
-        {/* The Glossy Sphere */}
-        <div
-          className="relative w-48 h-48 rounded-full z-20 flex items-center justify-center animate-float"
-          style={{
-            background: 'radial-gradient(circle at 30% 30%, #ffffff 0%, #e6e6e6 40%, #bfbfbf 85%, #8c8c8c 100%)',
-            boxShadow: `
-              inset -10px -10px 20px rgba(0,0,0,0.1),
-              inset 10px 10px 20px rgba(255,255,255,1),
-              0 20px 50px rgba(0,0,0,0.3)
-            `
-          }}
-        >
-          {/* Sharp Window Reflection */}
-          <div
-            className="absolute top-6 right-10 w-16 h-12 bg-white rounded-md opacity-90 blur-[1px] transform rotate-[15deg]"
-            style={{
-              background: 'linear-gradient(to bottom, #ffffff, rgba(255,255,255,0.8))',
-              boxShadow: '0 0 10px rgba(255,255,255,0.8)'
-            }}
-          />
+        {/* Ring 2 (Diameter 560px) */}
+        <div className="absolute w-[560px] h-[560px] rounded-full border border-[#E6E8F0]" />
 
-          {/* Inner Glow/Highlight */}
-          <div
-            className="absolute inset-0 rounded-full"
-            style={{
-              background: 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8) 0%, transparent 40%)',
-              filter: 'blur(2px)'
-            }}
-          />
-
-          {/* Logo Inside */}
-          <img
-            src="/assets/loadingpagelogo.png"
-            alt="Logo"
-            className="w-24 h-24 object-contain z-30 relative opacity-90"
-            style={{
-              filter: 'drop-shadow(0 4px 8px rgba(77, 124, 255, 0.2)) mix-blend-mode: multiply'
-            }}
-          />
+        {/* Ring 3 (Diameter 820px) + 22s Counter-Clockwise Arc (Hidden <600px) */}
+        <div className="hidden min-[600px]:flex absolute w-[820px] h-[820px] rounded-full border border-[#E6E8F0] items-center justify-center">
+          <svg
+            className="w-full h-full loader-arc-ccw-22"
+            viewBox="0 0 820 820"
+            style={{ willChange: 'transform' }}
+          >
+            <circle
+              cx="410"
+              cy="410"
+              r="409.25"
+              fill="none"
+              stroke="url(#loader-arc-grad-2)"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeDasharray="160 2410"
+              strokeDashoffset="300"
+            />
+            <defs>
+              <linearGradient
+                id="loader-arc-grad-2"
+                x1="100%"
+                y1="0%"
+                x2="0%"
+                y2="100%"
+              >
+                <stop offset="0%" stopColor="#5B5BF0" stopOpacity="0.9" />
+                <stop offset="100%" stopColor="#818CF8" stopOpacity="0" />
+              </linearGradient>
+            </defs>
+          </svg>
         </div>
 
-        {/* Liquid Ripple Effect */}
-        <div className="absolute -bottom-16 w-64 h-24 flex items-center justify-center perspective-[500px]">
-          {/* Main Dark Ripple Shadow */}
-          <div
-            className="absolute w-full h-full rounded-[100%] animate-ripple"
-            style={{
-              background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.15) 0%, transparent 60%)',
-              transform: 'scaleY(0.2)',
-              animationDelay: '0s'
-            }}
-          />
-          {/* Outer Ring 1 */}
-          <div
-            className="absolute w-[120%] h-[120%] rounded-[100%] border border-gray-300/30 animate-ripple"
-            style={{
-              transform: 'scaleY(0.2)',
-              animationDelay: '0.5s'
-            }}
-          />
-          {/* Outer Ring 2 */}
-          <div
-            className="absolute w-[150%] h-[150%] rounded-[100%] border border-gray-300/20 animate-ripple"
-            style={{
-              transform: 'scaleY(0.2)',
-              animationDelay: '1s'
-            }}
-          />
-        </div>
+        {/* Ring 4 (Diameter 1120px) (Hidden <600px) */}
+        <div className="hidden min-[600px]:block absolute w-[1120px] h-[1120px] rounded-full border border-[#E6E8F0]" />
 
+        {/* ─── 4 Orbiting White Bubbles with AI Tool Logos ─── */}
+        {ORBIT_BUBBLES.map((bubble) => {
+          const isOuter = bubble.ring === 'outer';
+          return (
+            <div
+              key={bubble.id}
+              className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none ${
+                isOuter ? 'hidden min-[600px]:block' : 'block'
+              }`}
+              style={{
+                width: `${bubble.radius * 2}px`,
+                height: `${bubble.radius * 2}px`,
+              }}
+            >
+              {/* Rotating Container (26s full circle) */}
+              <div
+                className="w-full h-full loader-orbit-rotate"
+                style={{
+                  transform: `rotate(${bubble.startAngle}deg)`,
+                  animationDuration: '26s',
+                }}
+              >
+                {/* Bubble Placed on the Orbit Perimeter */}
+                <div
+                  className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[46px] h-[46px] rounded-full bg-white border border-[#E8EAF0] shadow-[0_8px_24px_rgba(20,24,60,0.08)] flex items-center justify-center p-2.5"
+                  title={bubble.tool}
+                >
+                  {/* Counter-rotate icon to keep upright */}
+                  <div
+                    className="w-full h-full flex items-center justify-center loader-orbit-counter-rotate"
+                    style={{
+                      transform: `rotate(-${bubble.startAngle}deg)`,
+                      animationDuration: '26s',
+                    }}
+                  >
+                    <img
+                      src={bubble.iconSrc}
+                      alt={bubble.tool}
+                      className="w-5 h-5 object-contain pointer-events-none"
+                      loading="eager"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
       </div>
 
-      {/* Neumorphic Loading Bar */}
-      <div className="flex flex-col items-center space-y-6 z-10 mt-4">
-        <h1
-          className="text-4xl md:text-5xl font-bold tracking-tight text-gray-800 animate-fade-up"
-          style={{
-            textShadow: '1px 1px 2px rgba(255,255,255,0.8), -1px -1px 2px rgba(0,0,0,0.1)',
-            animationDelay: '0.2s'
-          }}
-        >
-          CAREER CRAFTLY
+      {/* ─── Center Column: Logo Orb, Title, Tagline, Progress Bar ─── */}
+      <div className="relative z-10 flex flex-col items-center text-center px-4 max-w-[500px]">
+        {/* Logo Orb with 8px 5s ease-in-out Float */}
+        <div className="relative loader-orb-float">
+          <div
+            className="w-[116px] h-[116px] max-[900px]:w-[96px] max-[900px]:h-[96px] rounded-full flex items-center justify-center relative border border-white"
+            style={{
+              background: 'radial-gradient(circle at center, #FFFFFF 0%, #F1F3FB 100%)',
+              boxShadow:
+                '0 24px 60px rgba(91,91,240,0.18), inset 0 -8px 20px rgba(91,91,240,0.08)',
+            }}
+          >
+            <img
+              src="/assets/loadingpagelogo.png"
+              alt="Career Craftly"
+              className="w-[56px] h-[56px] max-[900px]:w-[46px] max-[900px]:h-[46px] object-contain drop-shadow-[0_4px_12px_rgba(91,91,240,0.15)]"
+              loading="eager"
+            />
+          </div>
+        </div>
+
+        {/* Title */}
+        <h1 className="mt-[34px] text-[28px] max-[600px]:text-[24px] font-bold text-[#0F1222] tracking-[-0.02em] leading-tight">
+          Career Craftly
         </h1>
 
-        <p
-          className="text-lg opacity-80 animate-fade-up max-w-md text-center px-4"
-          style={{ color: '#2E2E2E', animationDelay: '0.3s' }}
-        >
+        {/* Tagline */}
+        <p className="mt-[8px] text-[16px] max-[600px]:text-[14px] text-[#5B6275] max-w-[420px] font-normal leading-relaxed">
           Where intelligent automation meets real-world execution
         </p>
 
+        {/* Progress Bar & Percentage (Fades out 200ms before overlay scale-fade exit) */}
         <div
-          className="relative w-64 h-4 rounded-full overflow-hidden animate-fade-up"
-          style={{
-            background: '#E3E6EB',
-            boxShadow: `
-              inset 3px 3px 6px rgba(0,0,0,0.15),
-              inset -3px -3px 6px rgba(255,255,255,0.8),
-              2px 2px 4px rgba(0,0,0,0.05)
-            `,
-            animationDelay: '0.4s'
-          }}
+          className={`flex flex-col items-center transition-opacity duration-200 ease-out ${
+            isBarFading ? 'opacity-0' : 'opacity-100'
+          }`}
         >
+          {/* Progress Track */}
           <div
-            className="h-full rounded-full transition-all duration-300 ease-out relative"
-            style={{
-              width: `${progress}%`,
-              background: 'linear-gradient(90deg, #4D7CFF 0%, #7aa0ff 100%)',
-              boxShadow: '0 0 10px rgba(77, 124, 255, 0.4)'
-            }}
+            className="w-[240px] h-[6px] bg-[#EEF0F8] rounded-full overflow-hidden mt-[26px] relative shadow-inner"
+            role="progressbar"
+            aria-valuenow={progress}
+            aria-valuemin={0}
+            aria-valuemax={100}
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent animate-shimmer-fast" />
+            <div
+              className="h-full rounded-full transition-all duration-150 ease-out bg-gradient-to-r from-[#8FA2FF] to-[#5B5BF0]"
+              style={{
+                width: `${progress}%`,
+                boxShadow: '0 0 10px rgba(91,91,240,0.4)',
+              }}
+            />
           </div>
+
+          {/* Percentage Text */}
+          <span className="text-[13px] text-[#8A90A2] font-mono tabular-nums mt-2.5 font-medium tracking-tight">
+            {progress}%
+          </span>
         </div>
       </div>
 
-      {/* animations */}
+      {/* ─── Scoped Keyframes & Performance CSS ─── */}
       <style>{`
-        @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
-        @keyframes particle {
-          0%,100%{opacity:0;transform:translateY(0) scale(0)}
-          10%{opacity:1;transform:translateY(-10px) scale(1)}
-          90%{opacity:1;transform:translateY(-100px) scale(1)}
-        }
-        @keyframes fade-up {
-          0%{opacity:0;transform:translateY(15px)}
-          100%{opacity:1;transform:translateY(0)}
-        }
-        @keyframes wave-slow {
-          0%,100%{transform:translateY(0);opacity:.3}
-          50%{transform:translateY(-20px);opacity:.2}
-        }
-        @keyframes wave-medium {
-          0%,100%{transform:translateX(0);opacity:.25}
-          50%{transform:translateX(30px);opacity:.15}
-        }
-        @keyframes shimmer-fast {
-          0%{transform:translateX(-100%)}
-          100%{transform:translateX(200%)}
-        }
-        @keyframes ripple {
-          0% { transform: scale(0.8) scaleY(0.2); opacity: 0.6; }
-          50% { transform: scale(1.2) scaleY(0.2); opacity: 0.3; }
-          100% { transform: scale(0.8) scaleY(0.2); opacity: 0.6; }
+        @keyframes loader-orb-float {
+          0%, 100% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-8px);
+          }
         }
 
-        .animate-float { animation: float 5s ease-in-out infinite; }
-        .animate-fade-up { animation: fade-up 1s ease-out forwards; opacity:0; }
-        .animate-particle { animation: particle 6s ease-in-out infinite; }
-        .animate-wave-slow { animation: wave-slow 8s ease-in-out infinite; }
-        .animate-wave-medium { animation: wave-medium 6s ease-in-out infinite; }
-        .animate-shimmer-fast { animation: shimmer-fast 1.2s linear infinite; }
-        .animate-ripple { animation: ripple 3s ease-in-out infinite; }
+        @keyframes loader-ripple {
+          0% {
+            width: 120px;
+            height: 120px;
+            opacity: 0.8;
+            transform: scale(0.9);
+          }
+          100% {
+            width: 1400px;
+            height: 1400px;
+            opacity: 0;
+            transform: scale(1.1);
+          }
+        }
+
+        @keyframes loader-spin-cw {
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(360deg);
+          }
+        }
+
+        @keyframes loader-spin-ccw {
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(-360deg);
+          }
+        }
+
+        .loader-orb-float {
+          animation: loader-orb-float 5s ease-in-out infinite;
+          will-change: transform;
+        }
+
+        .loader-ripple-ring {
+          animation: loader-ripple 5s cubic-bezier(0.1, 0.4, 0.2, 1) infinite;
+          will-change: transform, opacity;
+        }
+
+        .loader-arc-cw-14 {
+          animation: loader-spin-cw 14s linear infinite;
+          transform-origin: center;
+        }
+
+        .loader-arc-ccw-22 {
+          animation: loader-spin-ccw 22s linear infinite;
+          transform-origin: center;
+        }
+
+        .loader-orbit-rotate {
+          animation: loader-spin-cw 26s linear infinite;
+          transform-origin: center;
+          will-change: transform;
+        }
+
+        .loader-orbit-counter-rotate {
+          animation: loader-spin-ccw 26s linear infinite;
+          transform-origin: center;
+          will-change: transform;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .loader-orb-float,
+          .loader-ripple-ring,
+          .loader-arc-cw-14,
+          .loader-arc-ccw-22,
+          .loader-orbit-rotate,
+          .loader-orbit-counter-rotate {
+            animation: none !important;
+          }
+        }
       `}</style>
     </div>
   );

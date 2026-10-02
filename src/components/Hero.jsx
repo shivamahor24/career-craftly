@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ParticleHeadline from "./ParticleHeadline";
 
 /**
  * Interactive hero orb for CareerCraftly.
@@ -147,9 +148,11 @@ export default function Hero() {
 
           <ChromeOrb />
 
-          <h1 className="mt-6 text-6xl md:text-7xl font-black tracking-tight text-neutral-900 text-center">
-            CAREER CRAFTLY
-          </h1>
+          <ParticleHeadline
+            text="CAREER CRAFTLY"
+            fontSize={110}
+            color="#0f0f0f"
+          />
           <p className="mt-4 text-lg text-neutral-600 text-center max-w-xl">
             Where intelligent automation meets real-world execution
           </p>

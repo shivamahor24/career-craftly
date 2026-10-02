@@ -14,6 +14,8 @@ const Footer = () => {
 
     const navLinks = [
         { label: 'Home', to: '/' },
+        { label: 'Projects', to: '/projects' },
+        { label: 'Case Studies', to: '/case-studies' },
         { label: 'Programs', to: '/services' },
         { label: 'Event Gallery', to: '/events' },
         { label: 'Contact Us', to: '/contact' },
