@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Star, CheckCircle2 } from 'lucide-react';
+
+const Hero3DLogo = lazy(() => import('./Hero3DLogo'));
 
 /* ─── 10 Official AI Tool Logos with exact positions ─── */
 const TOOL_BUBBLES = [
@@ -115,6 +117,39 @@ const TOOL_BUBBLES = [
 ];
 
 const HeroSection = () => {
+  const heroRef = useRef(null);
+  const mousePos = useRef({ x: 0, y: 0 });
+  const [isInView, setIsInView] = useState(true);
+  const [useStaticFallback, setUseStaticFallback] = useState(false);
+
+  // Check low-power hardware & prefers-reduced-motion
+  useEffect(() => {
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isLowPower = navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2;
+    if (prefersReduced || isLowPower) {
+      setUseStaticFallback(true);
+    }
+  }, []);
+
+  // Pause rendering when off-screen using IntersectionObserver
+  useEffect(() => {
+    if (!heroRef.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsInView(entry.isIntersecting),
+      { threshold: 0.05 }
+    );
+    observer.observe(heroRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  const handleMouseMove = (e) => {
+    if (!heroRef.current || useStaticFallback) return;
+    const rect = heroRef.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    mousePos.current = { x: x * 2, y: y * 2 };
+  };
+
   // Motion container for initial entry sequence
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -166,6 +201,8 @@ const HeroSection = () => {
 
   return (
     <section
+      ref={heroRef}
+      onMouseMove={handleMouseMove}
       className="relative w-full h-[100svh] min-h-[680px] max-h-[1080px] flex flex-col justify-between items-center overflow-hidden bg-white select-none px-4 pt-[100px] pb-6"
       aria-label="Hero Section"
     >
@@ -181,6 +218,28 @@ const HeroSection = () => {
         aria-hidden="true"
       >
         <div className="absolute left-1/2 top-[46%] -translate-x-1/2 -translate-y-1/2 w-full h-full flex items-center justify-center">
+          {/* 3D Extruded Logo (Replaces center orb, floats, rotates & tilts toward mouse) */}
+          <div className="absolute w-[360px] h-[360px] sm:w-[480px] sm:h-[480px] pointer-events-none z-10 flex items-center justify-center">
+            {isInView && !useStaticFallback ? (
+              <Suspense
+                fallback={
+                  <img
+                    src="/assets/loadingpagelogo.png"
+                    alt="Career Craftly Logo"
+                    className="w-28 h-28 object-contain opacity-60 animate-pulse"
+                  />
+                }
+              >
+                <Hero3DLogo mousePos={mousePos} />
+              </Suspense>
+            ) : (
+              <img
+                src="/assets/loadingpagelogo.png"
+                alt="Career Craftly Logo Fallback"
+                className="w-32 h-32 object-contain opacity-85"
+              />
+            )}
+          </div>
           {/* Ring 1 (560px) with subtle breathing */}
           <div className="absolute w-[560px] h-[560px] rounded-full border border-[#E4E6EE] ring-breathe" />
 
