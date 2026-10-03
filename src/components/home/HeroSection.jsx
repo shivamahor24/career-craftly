@@ -440,7 +440,7 @@ const HeroSection = () => {
           {/* 4. Two Buttons Side by Side (44px tall, 15px font, 20px padding, fully rounded, 12px gap) */}
           <motion.div
             variants={itemVariants}
-            className="flex flex-row items-center justify-center gap-3 w-full sm:w-auto mb-6 sm:mb-8"
+            className="flex flex-row items-center justify-center gap-3 w-full sm:w-auto mb-8"
           >
             <a
               href="#contact"
@@ -457,95 +457,62 @@ const HeroSection = () => {
             </Link>
           </motion.div>
 
-          {/* 5. Real 3D Extruded Logo (Lazy loaded Three.js MeshPhysicalMaterial pearl/glass object) */}
+          {/* 5. Grounded 3D Extruded Logo (Centered at ~80% hero height under buttons, height min(26vh, 240px)) */}
           <motion.div
             variants={itemVariants}
-            className="w-full max-w-[360px] mx-auto h-[200px] sm:h-[230px] flex items-center justify-center relative z-20 pointer-events-auto my-1 sm:my-2"
+            className="relative w-full max-w-[720px] mx-auto flex flex-col items-center justify-center pointer-events-auto mt-2"
           >
-            {shouldRender3D ? (
-              <Suspense fallback={<LogoFallback />}>
-                <Hero3DCanvas />
-              </Suspense>
-            ) : (
-              <LogoFallback />
-            )}
-          </motion.div>
-
-          {/* 6. Stack of 3 Overlapping Notification Cards (Clean deck look, 440px wide, no cut text) */}
-          <motion.div
-            variants={cardStackVariants}
-            className="relative w-full max-w-[440px] mx-auto h-[124px]"
-          >
-            {/* Soft Lavender Radial Glow Behind Stack (520x220px, blur 60px) */}
+            {/* Soft Radial Lavender Halo Behind Logo (breathes slowly 5s) */}
             <div
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[520px] max-w-[90vw] h-[220px] rounded-full pointer-events-none -z-10"
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] sm:w-[380px] h-[340px] sm:h-[380px] rounded-full pointer-events-none -z-10 animate-breathe-halo"
               style={{
-                background: 'rgba(120, 130, 255, 0.25)',
-                filter: 'blur(60px)',
+                background:
+                  'radial-gradient(circle, rgba(123, 91, 240, 0.22) 0%, rgba(123, 91, 240, 0) 70%)',
               }}
               aria-hidden="true"
             />
 
-            {/* Deck of 3 Overlapping Cards */}
-            <div className="relative w-full h-full flex flex-col items-center">
-              {/* Card 1 (Front Card, Highest Z-Index, Full Size) */}
-              <motion.div
-                variants={singleCardVariants}
-                className="absolute top-0 z-30 w-full h-[64px] bg-white border border-[#EDEFF5] rounded-[14px] shadow-[0_10px_30px_rgba(20,24,60,0.07)] px-4 flex items-center gap-3 text-left transition-transform duration-200 hover:-translate-y-0.5"
-              >
-                <div className="relative w-9 h-9 rounded-full bg-[#EEF0FF] border border-[#DDE2FF] flex items-center justify-center shrink-0 font-semibold text-xs text-[#5B5BF0] overflow-hidden">
-                  <span>CC</span>
-                </div>
+            {/* 3D Canvas & Fallback Container (min(26vh, 240px) desktop, 190px short screens, 150px mobile) */}
+            <div className="relative w-full h-[190px] min-[760px]:h-[min(26vh,240px)] max-[600px]:h-[150px] flex items-center justify-center">
+              {shouldRender3D ? (
+                <Suspense fallback={<LogoFallback />}>
+                  <Hero3DCanvas onFloatUpdate={setFloatYVal} />
+                </Suspense>
+              ) : (
+                <LogoFallback />
+              )}
 
-                <div className="flex-1 min-w-0">
-                  <div className="text-[13px] font-semibold text-[#0F1222] truncate leading-tight flex items-center gap-1.5">
-                    <span>Workflow automation deployed</span>
-                    <CheckCircle2 size={13} className="text-[#5B5BF0] shrink-0" />
-                  </div>
-                  <div className="text-[13px] text-[#5B6275] truncate leading-tight mt-1 font-normal">
-                    Manufacturing client · 8 min ago
-                  </div>
-                </div>
-              </motion.div>
+              {/* 3 Flat HTML Pills OUTSIDE 3D Canvas (Hidden <900px, level with logo center) */}
+              {/* Label 1: AI Automation (Left) */}
+              <div className="hidden min-[900px]:flex items-center gap-2 px-3.5 py-2 text-[13px] font-semibold text-[#0F1222] bg-white border border-[#E8EAF0] rounded-full shadow-[0_8px_24px_rgba(20,24,60,0.08)] select-none whitespace-nowrap pointer-events-auto absolute left-2 lg:left-6 top-[42%] -translate-y-1/2 animate-bob-1">
+                <span className="w-2 h-2 rounded-full bg-[#5B5BF0] shrink-0" />
+                <span>AI Automation</span>
+              </div>
 
-              {/* Card 2 (Middle Deck Card, Shifted Down 30px, Width 94%, Top 10px Padding on Peek) */}
-              <motion.div
-                variants={singleCardVariants}
-                className="absolute top-[30px] z-20 w-[94%] h-[64px] bg-white border border-[#EDEFF5] rounded-[14px] shadow-[0_8px_24px_rgba(20,24,60,0.05)] px-4 flex items-center gap-3 text-left opacity-85 transition-transform duration-200"
-              >
-                <div className="relative w-9 h-9 rounded-full bg-[#F0FDF4] border border-[#DCFCE7] flex items-center justify-center shrink-0 font-semibold text-xs text-[#16A34A] overflow-hidden">
-                  <span>DR</span>
-                </div>
+              {/* Label 2: Software (Right) */}
+              <div className="hidden min-[900px]:flex items-center gap-2 px-3.5 py-2 text-[13px] font-semibold text-[#0F1222] bg-white border border-[#E8EAF0] rounded-full shadow-[0_8px_24px_rgba(20,24,60,0.08)] select-none whitespace-nowrap pointer-events-auto absolute right-2 lg:right-6 top-[42%] -translate-y-1/2 animate-bob-2">
+                <span className="w-2 h-2 rounded-full bg-[#5B5BF0] shrink-0" />
+                <span>Software</span>
+              </div>
 
-                <div className="flex-1 min-w-0">
-                  <div className="text-[13px] font-semibold text-[#0F1222] truncate leading-tight">
-                    Dashboard delivered
-                  </div>
-                  <div className="text-[13px] text-[#5B6275] truncate leading-tight mt-1 font-normal">
-                    Founder review · today
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Card 3 (Bottom Deck Card, Shifted Down 60px, Width 88%, Top 10px Padding on Peek) */}
-              <motion.div
-                variants={singleCardVariants}
-                className="absolute top-[60px] z-10 w-[88%] h-[64px] bg-white border border-[#EDEFF5] rounded-[14px] shadow-[0_6px_20px_rgba(20,24,60,0.04)] px-4 flex items-center gap-3 text-left opacity-85 transition-transform duration-200"
-              >
-                <div className="relative w-9 h-9 rounded-full bg-[#FFF7ED] border border-[#FFEDD5] flex items-center justify-center shrink-0 font-semibold text-xs text-[#EA580C] overflow-hidden">
-                  <span>PS</span>
-                </div>
-
-                <div className="flex-1 min-w-0">
-                  <div className="text-[13px] font-semibold text-[#0F1222] truncate leading-tight">
-                    Proposal sent
-                  </div>
-                  <div className="text-[13px] text-[#5B6275] truncate leading-tight mt-1 font-normal">
-                    [CLIENT NAME]
-                  </div>
-                </div>
-              </motion.div>
+              {/* Label 3: Marketing (Below-Left) */}
+              <div className="hidden min-[900px]:flex items-center gap-2 px-3.5 py-2 text-[13px] font-semibold text-[#0F1222] bg-white border border-[#E8EAF0] rounded-full shadow-[0_8px_24px_rgba(20,24,60,0.08)] select-none whitespace-nowrap pointer-events-auto absolute left-6 lg:left-12 top-[78%] animate-bob-3">
+                <span className="w-2 h-2 rounded-full bg-[#5B5BF0] shrink-0" />
+                <span>Marketing</span>
+              </div>
             </div>
+
+            {/* Soft Elliptical Grounding Shadow Under Logo (shrinks/lightens on float up, grows/darkens on float down) */}
+            <div
+              className="relative -mt-2 sm:-mt-4 rounded-full pointer-events-none transition-all duration-200"
+              style={{
+                width: `${220 * shadowScale}px`,
+                height: `${40 * shadowScale}px`,
+                background: `rgba(107, 91, 240, ${0.35 * Math.max(0.4, shadowOpacity)})`,
+                filter: 'blur(35px)',
+              }}
+              aria-hidden="true"
+            />
           </motion.div>
         </motion.div>
       </div>
@@ -621,6 +588,30 @@ const HeroSection = () => {
           50% {
             margin-top: 6px;
           }
+        }
+
+        @keyframes breathe-halo {
+          0%, 100% {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 0.8;
+          }
+          50% {
+            transform: translate(-50%, -50%) scale(1.08);
+            opacity: 1;
+          }
+        }
+        .animate-breathe-halo {
+          animation: breathe-halo 5s ease-in-out infinite;
+        }
+
+        .animate-bob-1 {
+          animation: float-subtle 6s ease-in-out infinite 0s;
+        }
+        .animate-bob-2 {
+          animation: float-subtle 6s ease-in-out infinite -2s;
+        }
+        .animate-bob-3 {
+          animation: float-subtle 6s ease-in-out infinite -4s;
         }
 
         @media (prefers-reduced-motion: reduce) {
