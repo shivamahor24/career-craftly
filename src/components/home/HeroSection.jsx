@@ -1,9 +1,11 @@
-import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
+import React, { Suspense, lazy, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Star, CheckCircle2 } from 'lucide-react';
+import FlowingStreakCanvas from './FlowingStreakCanvas';
+import LogoFallback from './LogoFallback';
 
-const Hero3DLogo = lazy(() => import('./Hero3DLogo'));
+const Hero3DCanvas = lazy(() => import('./Hero3DCanvas'));
 
 /* ─── 10 Official AI Tool Logos with exact positions ─── */
 const TOOL_BUBBLES = [
@@ -117,38 +119,21 @@ const TOOL_BUBBLES = [
 ];
 
 const HeroSection = () => {
-  const heroRef = useRef(null);
-  const mousePos = useRef({ x: 0, y: 0 });
-  const [isInView, setIsInView] = useState(true);
-  const [useStaticFallback, setUseStaticFallback] = useState(false);
+  const [shouldRender3D, setShouldRender3D] = useState(true);
 
-  // Check low-power hardware & prefers-reduced-motion
   useEffect(() => {
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const isLowPower = navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2;
-    if (prefersReduced || isLowPower) {
-      setUseStaticFallback(true);
+    const prefersReducedMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches;
+
+    const isLowPower =
+      (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2) ||
+      (navigator.deviceMemory && navigator.deviceMemory <= 2);
+
+    if (prefersReducedMotion || isLowPower) {
+      setShouldRender3D(false);
     }
   }, []);
-
-  // Pause rendering when off-screen using IntersectionObserver
-  useEffect(() => {
-    if (!heroRef.current) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => setIsInView(entry.isIntersecting),
-      { threshold: 0.05 }
-    );
-    observer.observe(heroRef.current);
-    return () => observer.disconnect();
-  }, []);
-
-  const handleMouseMove = (e) => {
-    if (!heroRef.current || useStaticFallback) return;
-    const rect = heroRef.current.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    mousePos.current = { x: x * 2, y: y * 2 };
-  };
 
   // Motion container for initial entry sequence
   const containerVariants = {
@@ -201,11 +186,11 @@ const HeroSection = () => {
 
   return (
     <section
-      ref={heroRef}
-      onMouseMove={handleMouseMove}
       className="relative w-full h-[100svh] min-h-[680px] max-h-[1080px] flex flex-col justify-between items-center overflow-hidden bg-white select-none px-4 pt-[100px] pb-6"
       aria-label="Hero Section"
     >
+      {/* ─── Flowing particle streak canvas background ─── */}
+      <FlowingStreakCanvas />
       {/* ─── 5 Decorative Concentric Rings (Centered at 50% x, 46% y) ─── */}
       <div
         className="absolute inset-0 pointer-events-none overflow-hidden z-0"
@@ -218,28 +203,6 @@ const HeroSection = () => {
         aria-hidden="true"
       >
         <div className="absolute left-1/2 top-[46%] -translate-x-1/2 -translate-y-1/2 w-full h-full flex items-center justify-center">
-          {/* 3D Extruded Logo (Replaces center orb, floats, rotates & tilts toward mouse) */}
-          <div className="absolute w-[360px] h-[360px] sm:w-[480px] sm:h-[480px] pointer-events-none z-10 flex items-center justify-center">
-            {isInView && !useStaticFallback ? (
-              <Suspense
-                fallback={
-                  <img
-                    src="/assets/loadingpagelogo.png"
-                    alt="Career Craftly Logo"
-                    className="w-28 h-28 object-contain opacity-60 animate-pulse"
-                  />
-                }
-              >
-                <Hero3DLogo mousePos={mousePos} />
-              </Suspense>
-            ) : (
-              <img
-                src="/assets/loadingpagelogo.png"
-                alt="Career Craftly Logo Fallback"
-                className="w-32 h-32 object-contain opacity-85"
-              />
-            )}
-          </div>
           {/* Ring 1 (560px) with subtle breathing */}
           <div className="absolute w-[560px] h-[560px] rounded-full border border-[#E4E6EE] ring-breathe" />
 
@@ -494,7 +457,21 @@ const HeroSection = () => {
             </Link>
           </motion.div>
 
-          {/* 5. Stack of 3 Overlapping Notification Cards (Clean deck look, 440px wide, no cut text) */}
+          {/* 5. Real 3D Extruded Logo (Lazy loaded Three.js MeshPhysicalMaterial pearl/glass object) */}
+          <motion.div
+            variants={itemVariants}
+            className="w-full max-w-[360px] mx-auto h-[200px] sm:h-[230px] flex items-center justify-center relative z-20 pointer-events-auto my-1 sm:my-2"
+          >
+            {shouldRender3D ? (
+              <Suspense fallback={<LogoFallback />}>
+                <Hero3DCanvas />
+              </Suspense>
+            ) : (
+              <LogoFallback />
+            )}
+          </motion.div>
+
+          {/* 6. Stack of 3 Overlapping Notification Cards (Clean deck look, 440px wide, no cut text) */}
           <motion.div
             variants={cardStackVariants}
             className="relative w-full max-w-[440px] mx-auto h-[124px]"
