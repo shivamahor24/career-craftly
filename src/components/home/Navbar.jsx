@@ -8,7 +8,6 @@ const Navbar = () => {
   const location = useLocation();
 
   const isCaseStudiesActive = location.pathname.startsWith('/case-studies');
-  const isProjectsActive = location.pathname.startsWith('/projects');
 
   const navLinks = [
     { label: 'Services', href: '/#services', isRoute: false },
@@ -20,11 +19,12 @@ const Navbar = () => {
       subItems: [
         { label: 'AI Automation', href: '/#services' },
         { label: 'Software Engineering', href: '/#services' },
-        { label: 'Digital Marketing & Growth', href: '/#services' },
-        { label: 'Brand & Systems Consulting', href: '/#services' },
+        { label: 'SaaS Development', href: '/#services' },
+        { label: 'AI & Machine Learning', href: '/#services' },
+        { label: 'Web & Mobile App Development', href: '/#services' },
+        { label: 'Cloud & DevOps Solutions', href: '/#services' },
       ],
     },
-    { label: 'Projects', href: '/projects', isRoute: true },
     { label: 'Case Studies', href: '/case-studies', isRoute: true },
     { label: 'How We Work', href: '/#how-we-work', isRoute: false },
     { label: 'FAQ', href: '/#faq', isRoute: false },
@@ -64,9 +64,7 @@ const Navbar = () => {
           {/* Center: Navigation Links (15px, #3A4054) */}
           <div className="hidden lg:flex items-center gap-7 text-[15px] font-medium text-[#3A4054]">
             {navLinks.map((link) => {
-              const isActive =
-                (link.href === '/case-studies' && isCaseStudiesActive) ||
-                (link.href === '/projects' && isProjectsActive);
+              const isActive = link.href === '/case-studies' && isCaseStudiesActive;
 
               if (link.hasDropdown) {
                 return (
@@ -92,7 +90,7 @@ const Navbar = () => {
 
                     {/* Solutions dropdown */}
                     {solutionsOpen && (
-                      <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-56 z-50">
+                      <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-64 z-50">
                         <div className="bg-white rounded-2xl border border-[#E8EAF0] shadow-xl p-2 flex flex-col gap-1">
                           {link.subItems.map((sub) => (
                             <a
@@ -176,9 +174,7 @@ const Navbar = () => {
           <div className="lg:hidden mt-2 p-5 bg-white rounded-3xl border border-[#E8EAF0] shadow-2xl transition-all">
             <div className="flex flex-col gap-3">
               {navLinks.map((link) => {
-                const isActive =
-                  (link.href === '/case-studies' && isCaseStudiesActive) ||
-                  (link.href === '/projects' && isProjectsActive);
+                const isActive = link.href === '/case-studies' && isCaseStudiesActive;
 
                 if (link.isRoute) {
                   return (

@@ -9,8 +9,6 @@ import Contact from './pages/Contact';
 import EventsGallery from './pages/EventsGallery';
 import CaseStudies from './pages/CaseStudies';
 import CaseStudyDetail from './pages/CaseStudyDetail';
-import Projects from './pages/Projects';
-import ProjectDetail from './pages/ProjectDetail';
 import NotFound from './pages/NotFound';
 
 import LoadingScreen from './components/ui/LoadingScreen';
@@ -20,8 +18,7 @@ function AppLayout() {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
   const isCaseStudiesPage = location.pathname.startsWith('/case-studies');
-  const isProjectsPage = location.pathname.startsWith('/projects');
-  const hasDedicatedLayout = isHomePage || isCaseStudiesPage || isProjectsPage;
+  const hasDedicatedLayout = isHomePage || isCaseStudiesPage;
 
   return (
     <div className="min-h-screen flex flex-col bg-white text-[#0F1222]">
@@ -31,8 +28,6 @@ function AppLayout() {
           <Route path="/" element={<Home />} />
           <Route path="/case-studies" element={<CaseStudies />} />
           <Route path="/case-studies/:slug" element={<CaseStudyDetail />} />
-          <Route path="/projects" element={<Projects />} />
-          <Route path="/projects/:slug" element={<ProjectDetail />} />
           <Route path="/services" element={<Services />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/events" element={<EventsGallery />} />

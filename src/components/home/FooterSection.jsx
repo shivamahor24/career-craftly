@@ -142,11 +142,6 @@ const FooterSection = () => {
               </h4>
               <ul className="space-y-3 text-sm">
                 <li>
-                  <Link to="/projects" className="hover:text-[#5B5BF0] transition-colors">
-                    Projects
-                  </Link>
-                </li>
-                <li>
                   <Link to="/case-studies" className="hover:text-[#5B5BF0] transition-colors">
                     Case Studies
                   </Link>
