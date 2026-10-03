@@ -120,6 +120,10 @@ const TOOL_BUBBLES = [
 
 const HeroSection = () => {
   const [shouldRender3D, setShouldRender3D] = useState(true);
+  const [floatYVal, setFloatYVal] = useState(0);
+
+  const shadowScale = 1.0 - floatYVal * 0.8;
+  const shadowOpacity = 1.0 - floatYVal * 0.7;
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia(
